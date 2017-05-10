@@ -8,15 +8,16 @@ import java.util.List;
  */
 public class SimpleBST<T> implements BinarySearchTree<T> {
     private Comparator<T> comparator;
+    private Element root;
 
     @Override
     public T minValue() {
-        return null;
+        return this.getMinRecurrence(this.root);
     }
 
     @Override
     public T maxValue() {
-        return null;
+        return this.getMaxRecurrence(this.root);
     }
 
     @Override
@@ -30,8 +31,10 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
     }
 
     @Override
-    public boolean add(T t) {
-        return false;
+    public boolean add(T t){
+        if (this.root != null) return this.addElement(t, null);
+        this.root = new Element(t);
+        return true;
     }
 
     @Override
@@ -54,6 +57,41 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         return null;
     }
 
+    private boolean addElement(T t, Element element){
+        int compareResult = this.comparator.compare(t, element.getContent());
+        if(compareResult == 0) return false;
+        if (compareResult > 0){
+            if (element.getRight() == null) {
+                element.setRight(new Element(t));
+                return true;
+            }
+            else return this.addElement(t, element.getRight());
+        } else {
+            if (element.getLeft() == null) {
+                element.setLeft(new Element(t));
+                return true;
+            }
+            else return this.addElement(t, element.getLeft());
+        }
+    }
+
+    private T getMinRecurrence(Element element){
+        if (element.getLeft() == null) return element.getContent();
+        return this.getMinRecurrence(element.getLeft());
+    }
+
+    private T getMaxRecurrence(Element element){
+        if (element.getRight() == null) return element.getContent();
+        return this.getMaxRecurrence((element.getRight()));
+    }
+
+    private Element getElementFormSubtree(T t, Element element){
+        int compareResult = this.comparator.compare(t, element.getContent());
+        if (compareResult == 0) return element;
+        if (compareResult > 0) return this.getElementFormSubtree(t, element.getRight());
+        else return this.getElementFormSubtree(t, element.getLeft());
+    }
+
     private class Element{
         private Element left;
         private Element right;
@@ -65,18 +103,28 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
             this.right = null;
         }
 
-        boolean addElement(T t) {
-            int result = comparator.compare(content, t);
+        Element getLeft(){
+            return this.left;
+        }
 
-            if (result == 0) return false;
-            if (result < 0){
-                if (left != null) left.addElement(t);
-                else left = new Element(t);
-            } else {
-                if (right != null) left.addElement(t);
-                else right = new Element(t);
-            }
-            return true;
+        Element getRight(){
+            return this.right;
+        }
+
+        T getContent(){
+            return this.content;
+        }
+
+        public void setLeft(Element left) {
+            this.left = left;
+        }
+
+        public void setRight(Element right) {
+            this.right = right;
+        }
+
+        public void setContent(T content) {
+            this.content = content;
         }
     }
 }

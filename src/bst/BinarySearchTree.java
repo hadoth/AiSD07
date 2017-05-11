@@ -15,4 +15,7 @@ public interface BinarySearchTree<T> {
     List<T> getAllInOrder();
     List<T> getAllPreOrder();
     List<T> getAllPostOrder();
+    int size();
+    int height();
+    BinarySearchTree<T> subtree(T t);
 }

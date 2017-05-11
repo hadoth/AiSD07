@@ -57,6 +57,21 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         return null;
     }
 
+    @Override
+    public int size() {
+        return 0;
+    }
+
+    @Override
+    public int height() {
+        return 0;
+    }
+
+    @Override
+    public BinarySearchTree<T> subtree(T t) {
+        return null;
+    }
+
     private boolean addElement(T t, Element element){
         int compareResult = this.comparator.compare(t, element.getContent());
         if(compareResult == 0) return false;

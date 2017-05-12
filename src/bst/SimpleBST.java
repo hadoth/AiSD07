@@ -11,6 +11,17 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
     private Comparator<T> comparator;
     private Element root;
 
+    public SimpleBST(Comparator<T> comparator){
+        this.comparator = comparator;
+    }
+
+    private SimpleBST(Comparator<T> comparator, Element element){
+        this.comparator = comparator;
+        this.root = new Element(element.getContent());
+        this.root.setLeft(element.getLeft());
+        this.root.setRight(element.getRight());
+    }
+
     @Override
     public T minValue() {
         return this.root.getMinRecurrence();
@@ -74,17 +85,17 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
     @Override
     public int size() {
-        return 0;
+        return this.root.subtreeSize();
     }
 
     @Override
     public int height() {
-        return 0;
+        return this.root.subtreeHeight() - 1;
     }
 
     @Override
     public BinarySearchTree<T> subtree(T t) {
-        return null;
+        return new SimpleBST<>(this.comparator, this.getElementFormSubtree(t, this.root));
     }
 
     private boolean addElement(T t, Element element){
@@ -188,6 +199,25 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         private T getMaxRecurrence(){
             if (this.hasRight()) return this.right.getMaxRecurrence();
             return this.content;
+        }
+
+        int subtreeHeight(){
+
+        }
+
+        int subtreeSize(){
+            int result = 1;
+            if (this.hasLeft()) result+= this.getLeft().subtreeSize();
+            if (this.hasRight()) result+= this.getRight().subtreeSize();
+            return result;
+        }
+
+        int subtreeLeaves(){
+            return (!this.hasLeft() && ! this.hasRight()) ? 1 : (this.hasLeft() ? this.left.subtreeLeaves() : 0) + (this.hasRight() ? this.right.subtreeLeaves() : 0);
+        }
+
+        int subtreeMisbalance(){
+            return Math.abs((this.hasLeft() ? this.left.subtreeHeight() : 0) - (this.hasRight() ? this.right.subtreeHeight() : 0));
         }
     }
 }

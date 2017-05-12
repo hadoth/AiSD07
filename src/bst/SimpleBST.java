@@ -1,5 +1,6 @@
 package bst;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -12,22 +13,30 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
     @Override
     public T minValue() {
-        return this.getMinRecurrence(this.root);
+        return this.root.getMinRecurrence();
     }
 
     @Override
     public T maxValue() {
-        return this.getMaxRecurrence(this.root);
+        return this.root.getMaxRecurrence();
     }
 
     @Override
     public T previousValue(T t) throws IndexOutOfBoundsException {
-        return null;
+        Element thisOne = this.getElementFormSubtree(t, this.root);
+        if (thisOne.hasLeft()) return thisOne.getLeft().getMaxRecurrence();
+        Element parent = thisOne.getParent();
+        while (!parent.hasRight()) parent = parent.getParent();
+        return parent.getContent();
     }
 
     @Override
     public T nextValue(T t) throws IndexOutOfBoundsException {
-        return null;
+        Element thisOne = this.getElementFormSubtree(t, this.root);
+        if (thisOne.hasRight()) return thisOne.getRight().getMinRecurrence();
+        Element parent = thisOne.getParent();
+        while (!parent.hasLeft()) parent = parent.getParent();
+        return parent.getContent();
     }
 
     @Override
@@ -44,17 +53,23 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
     @Override
     public List<T> getAllInOrder() {
-        return null;
+        ArrayList<T> result = new ArrayList<T>();
+        this.root.insertInOrder(result);
+        return result;
     }
 
     @Override
     public List<T> getAllPreOrder() {
-        return null;
+        ArrayList<T> result = new ArrayList<T>();
+        this.root.insertPreOrder(result);
+        return result;
     }
 
     @Override
     public List<T> getAllPostOrder() {
-        return null;
+        ArrayList<T> result = new ArrayList<T>();
+        this.root.insertPostOrder(result);
+        return result;
     }
 
     @Override
@@ -76,28 +91,14 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         int compareResult = this.comparator.compare(t, element.getContent());
         if(compareResult == 0) return false;
         if (compareResult > 0){
-            if (element.getRight() == null) {
-                element.setRight(new Element(t));
-                return true;
-            }
-            else return this.addElement(t, element.getRight());
+            if (element.hasRight()) return this.addElement(t, element.getRight());
+            element.setRight(new Element(t));
+            return true;
         } else {
-            if (element.getLeft() == null) {
-                element.setLeft(new Element(t));
-                return true;
-            }
-            else return this.addElement(t, element.getLeft());
+            if (element.hasLeft()) return this.addElement(t, element.getLeft());
+            element.setLeft(new Element(t));
+            return true;
         }
-    }
-
-    private T getMinRecurrence(Element element){
-        if (element.getLeft() == null) return element.getContent();
-        return this.getMinRecurrence(element.getLeft());
-    }
-
-    private T getMaxRecurrence(Element element){
-        if (element.getRight() == null) return element.getContent();
-        return this.getMaxRecurrence((element.getRight()));
     }
 
     private Element getElementFormSubtree(T t, Element element){
@@ -110,12 +111,21 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
     private class Element{
         private Element left;
         private Element right;
+        private Element parent;
         private T content;
 
         Element(T t){
             this.content = t;
             this.left = null;
             this.right = null;
+        }
+
+        boolean hasLeft(){
+            return this.left != null;
+        }
+
+        boolean hasRight(){
+            return this.right != null;
         }
 
         Element getLeft(){
@@ -132,14 +142,52 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
         public void setLeft(Element left) {
             this.left = left;
+            this.left.setParent(this);
         }
 
         public void setRight(Element right) {
             this.right = right;
+            this.right.setParent(this);
         }
 
         public void setContent(T content) {
             this.content = content;
+        }
+
+        public Element getParent() {
+            return parent;
+        }
+
+        public void setParent(Element parent) {
+            this.parent = parent;
+        }
+
+        void insertInOrder(List<T> list){
+            if (this.hasLeft()) this.getLeft().insertInOrder(list);
+            list.add(this.content);
+            if (this.hasRight()) this.getRight().insertInOrder(list);
+        }
+
+        void insertPreOrder(List<T> list){
+            list.add(this.content);
+            if (this.hasLeft()) this.getLeft().insertPreOrder(list);
+            if (this.hasRight()) this.getRight().insertPreOrder(list);
+        }
+
+        void insertPostOrder(List<T> list){
+            list.add(this.content);
+            if (this.hasLeft()) this.getLeft().insertPostOrder(list);
+            if (this.hasRight()) this.getRight().insertPostOrder(list);
+        }
+
+        private T getMinRecurrence(){
+            if (this.hasLeft()) return this.left.getMinRecurrence();
+            return this.content;
+        }
+
+        private T getMaxRecurrence(){
+            if (this.hasRight()) return this.right.getMaxRecurrence();
+            return this.content;
         }
     }
 }

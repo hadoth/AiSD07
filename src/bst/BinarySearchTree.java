@@ -1,5 +1,6 @@
 package bst;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -50,7 +51,7 @@ public interface BinarySearchTree<T> {
         if (tree.size() != tree.getAllInOrder().size()) throw new AssertionError("BST tree is not sorted");
     }
 
-    public static<T> void treeDetails(BinarySearchTree<T> tree){
+    static<T> void treeDetails(BinarySearchTree<T> tree){
         StringBuilder result = new StringBuilder();
         result.append("tree height: ");
         result.append(tree.height());

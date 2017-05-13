@@ -14,33 +14,30 @@ public class ListSevenExOneTest {
         BinarySearchTree<Integer> testTree = new SimpleBST<>(Integer::compareTo);
 
         testTree.add(10);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
         testTree.add(20);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
         testTree.add(5);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
         testTree.add(6);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
         testTree.add(7);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
         testTree.add(25);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
         testTree.add(15);
-        BinarySearchTree.treeDetails(testTree);
+        System.out.println(testTree);
 
 
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         testTree.delete(7);
-        BinarySearchTree.treeDetails(testTree);
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         testTree.delete(5);
-        BinarySearchTree.treeDetails(testTree);
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         testTree.delete(20);
-        BinarySearchTree.treeDetails(testTree);
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         for (int i = 0; i < 100; i++){
@@ -50,13 +47,11 @@ public class ListSevenExOneTest {
                 if (!testTree.add((int)(Math.random()*100))) System.out.println("Add failed, number already in set");
             }
             BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
-            BinarySearchTree.treeDetails(testTree);
             BinarySearchTree.assertSize(testTree);
 //            printTree(testTree);
         }
 
         while (testTree.size() > 0){
-            BinarySearchTree.treeDetails(testTree);
             BinarySearchTree.removeRandom(testTree);
             BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 //            printTree(testTree);

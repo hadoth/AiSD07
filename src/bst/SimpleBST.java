@@ -283,5 +283,73 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         int childCount(){
             return (this.hasLeft() ? 1 : 0) + (this.hasRight() ? 1 : 0);
         }
+
+        List<T> getLayer(List<T> list, int layerIndex){
+            if (layerIndex == 0) {
+                list.add(this.getContent());
+                return list;
+            }
+            if (this.hasLeft()){
+                this.left.getLayer(list, layerIndex - 1);
+            } else {
+                for (int i = 0; i < Math.pow(2, layerIndex-1); i++) list.add(null);
+            }
+            if (this.hasRight()){
+                this.right.getLayer(list, layerIndex - 1);
+            } else {
+                for (int i = 0; i < Math.pow(2, layerIndex -1); i++) list.add(null);
+            }
+            return list;
+        }
+    }
+
+    public String toString(){
+
+        // set string builder
+        StringBuilder result = new StringBuilder();
+
+        // check if tree exists
+        if (this.root == null) {
+            return "The tree is empty";
+        }
+
+        // Create array of lists, each containing next layer; determine max length of element;
+        int numberOfLayers = this.height() + 1;
+        List<T>[] listOfLists = new List[numberOfLayers];
+        int maxLength = 0;
+        for (int i = 0; i < numberOfLayers; i++){
+            listOfLists[i] = this.root.getLayer(new ArrayList<>(), i);
+            for (int j = 0; j < listOfLists[i].size(); j++){
+                T t;
+                if ((t = listOfLists[i].get(j)) != null){
+                    if (t.toString().length() > maxLength) maxLength = t.toString().length();
+                }
+            }
+        }
+
+        // Create string representing tree structure
+        int rowSize = (maxLength + 6) * listOfLists[listOfLists.length - 1].size();
+        for (int i = 0; i < rowSize/4; i++) result.append("-=*=- ");
+        result.append('\n');
+        for (int i =0; i < numberOfLayers; i++){
+            for (int j = 0; j < listOfLists[i].size(); j++){
+                T t = listOfLists[i].get(j);
+                result.append(center(t != null ? t.toString() : "", rowSize/(listOfLists[i].size())));
+            }
+            result.append('\n');
+        }
+        for (int i = 0; i < rowSize/4; i++) result.append("-=*=- ");
+        result.append('\n');
+
+        return result.toString();
+    }
+
+    private static String center(String string, int length){
+        if (length < string.length()) throw new IllegalArgumentException("String is longer than the designated placeholder");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < (length - string.length())/2; i++) result.append(" ");
+        result.append(string);
+        while (result.length() < length) result.append(" ");
+        return result.toString();
     }
 }

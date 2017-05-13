@@ -52,40 +52,81 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
     @Override
     public boolean add(T t){
-        if (this.root != null) return this.addElement(t, null);
+        if (this.root != null) return this.addElement(t, this.root);
         this.root = new Element(t);
         return true;
     }
 
     @Override
     public boolean delete(T t) {
-        return false;
+        try {
+            Element toDelete = this.getElementFormSubtree(t, this.root);
+            int childCount = toDelete.childCount();
+            if (childCount == 0){
+                if (this.root.equals(toDelete)){
+                    this.root = null;
+                    return true;
+                }
+                if (toDelete.equals(toDelete.getParent().getLeft())) toDelete.getParent().setLeft(null);
+                else toDelete.getParent().setRight(null);
+            } else if (childCount == 1){
+                Element child = toDelete.hasLeft() ? toDelete.getLeft() : toDelete.getRight();
+                if (this.root.equals(toDelete)){
+                    this.root = child;
+                    this.root.setParent(null);
+                    return true;
+                }
+                if (toDelete.equals(toDelete.getParent().getLeft())) toDelete.getParent().setLeft(child);
+                else toDelete.getParent().setRight(child);
+            } else {
+                Element nextOne = this.getElementFormSubtree(this.nextValue(t), this.root);
+                toDelete.setContent(nextOne.getContent());
+                nextOne.setContent(t);
+                if (nextOne.childCount() == 0){
+                    if (nextOne.equals(nextOne.getParent().getLeft())){
+                        nextOne.getParent().setLeft(null);
+                    } else {
+                        nextOne.getParent().setRight(null);
+                    }
+                } else {
+                    Element child = nextOne.hasLeft() ? nextOne.getLeft() : nextOne.getRight();
+                    if (nextOne.equals(nextOne.getParent().getLeft())){
+                        nextOne.getParent().setLeft(child);
+                    } else {
+                        nextOne.getParent().setRight(child);
+                    }
+                }
+            }
+        } catch (NullPointerException e){
+            return false;
+        }
+        return true;
     }
 
     @Override
     public List<T> getAllInOrder() {
         ArrayList<T> result = new ArrayList<T>();
-        this.root.insertInOrder(result);
+        if (this.root != null) this.root.insertInOrder(result);
         return result;
     }
 
     @Override
     public List<T> getAllPreOrder() {
         ArrayList<T> result = new ArrayList<T>();
-        this.root.insertPreOrder(result);
+        if (this.root != null) this.root.insertPreOrder(result);
         return result;
     }
 
     @Override
     public List<T> getAllPostOrder() {
         ArrayList<T> result = new ArrayList<T>();
-        this.root.insertPostOrder(result);
+        if (this.root != null) this.root.insertPostOrder(result);
         return result;
     }
 
     @Override
     public int size() {
-        return this.root.subtreeSize();
+        return (this.root == null) ? 0 : this.root.subtreeSize();
     }
 
     @Override
@@ -165,12 +206,12 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
         public void setLeft(Element left) {
             this.left = left;
-            this.left.setParent(this);
+            if (left != null) this.left.setParent(this);
         }
 
         public void setRight(Element right) {
             this.right = right;
-            this.right.setParent(this);
+            if (right != null) this.right.setParent(this);
         }
 
         public void setContent(T content) {
@@ -203,7 +244,6 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
             if (this.hasRight()) this.getRight().insertPostOrder(list);
         }
 
-
         // One-liner hell of code readability
         private T getMinRecurrence(){
             return this.hasLeft() ? this.left.getMinRecurrence() : this.content;
@@ -231,6 +271,10 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
         int subtreeMaxMisbalance(){
             return Math.max(this.subtreeMisbalance(), Math.max(this.hasLeft() ? this.left.subtreeMaxMisbalance() : 0, this.hasRight() ? this.right.subtreeMaxMisbalance() : 0));
+        }
+
+        int childCount(){
+            return (this.hasLeft() ? 1 : 0) + (this.hasRight() ? 1 : 0);
         }
     }
 }

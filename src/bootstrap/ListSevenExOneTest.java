@@ -14,23 +14,34 @@ public class ListSevenExOneTest {
         BinarySearchTree<Integer> testTree = new SimpleBST<>(Integer::compareTo);
 
         testTree.add(10);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(20);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(5);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(6);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(7);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(25);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(15);
+        BinarySearchTree.treeDetails(testTree);
 
-        testIfSorted(testTree);
+
+        BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         testTree.delete(7);
-        testIfSorted(testTree);
+        BinarySearchTree.treeDetails(testTree);
+        BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         testTree.delete(5);
-        testIfSorted(testTree);
+        BinarySearchTree.treeDetails(testTree);
+        BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         testTree.delete(20);
-        testIfSorted(testTree);
+        BinarySearchTree.treeDetails(testTree);
+        BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
         for (int i = 0; i < 100; i++){
             if(testTree.size() == 0){
@@ -38,37 +49,17 @@ public class ListSevenExOneTest {
             } else {
                 if (!testTree.add((int)(Math.random()*100))) System.out.println("Add failed, number already in set");
             }
-            testIfSorted(testTree);
-            printTree(testTree);
+            BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
+            BinarySearchTree.treeDetails(testTree);
+            BinarySearchTree.assertSize(testTree);
+//            printTree(testTree);
         }
 
         while (testTree.size() > 0){
-            removeRandom(testTree);
-            testIfSorted(testTree);
-            printTree(testTree);
-        }
-    }
-
-    public static<T> void printTree(BinarySearchTree<T> tree){
-        System.out.println(Arrays.toString(tree.getAllInOrder().toArray()));
-    }
-
-    public static void removeRandom(BinarySearchTree<Integer> tree){
-        int elementToDelete = tree.getAllInOrder().get((int)(Math.random()*tree.size()));
-        System.out.println(elementToDelete);
-        tree.delete(elementToDelete);
-    }
-
-    public static void testIfSorted(BinarySearchTree<Integer> tree){
-        List<Integer> list = tree.getAllInOrder();
-        if (list.size() > 1){
-            int left = list.get(0);
-            int right;
-            for (int i = 1; i < list.size(); i++){
-                right = list.get(i);
-                if (Integer.compare(left, right) >= 0) throw new AssertionError("BST tree is not sorted");
-                left = right;
-            }
+            BinarySearchTree.treeDetails(testTree);
+            BinarySearchTree.removeRandom(testTree);
+            BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
+//            printTree(testTree);
         }
     }
 }

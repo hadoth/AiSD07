@@ -105,21 +105,21 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
     @Override
     public List<T> getAllInOrder() {
-        ArrayList<T> result = new ArrayList<T>();
+        ArrayList<T> result = new ArrayList<>();
         if (this.root != null) this.root.insertInOrder(result);
         return result;
     }
 
     @Override
     public List<T> getAllPreOrder() {
-        ArrayList<T> result = new ArrayList<T>();
+        ArrayList<T> result = new ArrayList<>();
         if (this.root != null) this.root.insertPreOrder(result);
         return result;
     }
 
     @Override
     public List<T> getAllPostOrder() {
-        ArrayList<T> result = new ArrayList<T>();
+        ArrayList<T> result = new ArrayList<>();
         if (this.root != null) this.root.insertPostOrder(result);
         return result;
     }
@@ -131,24 +131,27 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
     @Override
     public int height() {
-        return this.root.subtreeHeight() - 1;
+        return this.root == null ? -1 : this.root.subtreeHeight() - 1;
+    }
+
+    @Override
+    public int misbalance() {
+        return this.root != null ? this.root.subtreeMisbalance() : 0;
+    }
+
+    @Override
+    public int maxMisbalance() {
+        return this.root != null ? this.root.subtreeMaxMisbalance() : 0;
+    }
+
+    @Override
+    public int leavesCount() {
+        return this.root != null ? this.root.subtreeLeaves() : 0;
     }
 
     @Override
     public BinarySearchTree<T> subtree(T t) {
         return new SimpleBST<>(this.comparator, this.getElementFormSubtree(t, this.root));
-    }
-
-    public int getTreeMisbalance(){
-        return this.root.subtreeMisbalance();
-    }
-
-    public int getTreeMaxmisbalance(){
-        return this.root.subtreeMaxMisbalance();
-    }
-
-    public int getLeavesCount(){
-        return this.root.subtreeLeaves();
     }
 
     private boolean addElement(T t, Element element){
@@ -266,11 +269,15 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         }
 
         int subtreeMisbalance(){
-            return Math.abs((this.hasLeft() ? this.left.subtreeHeight() : 0) - (this.hasRight() ? this.right.subtreeHeight() : 0));
+            return (this.hasLeft() ? this.left.subtreeHeight() : 0) - (this.hasRight() ? this.right.subtreeHeight() : 0);
         }
 
         int subtreeMaxMisbalance(){
-            return Math.max(this.subtreeMisbalance(), Math.max(this.hasLeft() ? this.left.subtreeMaxMisbalance() : 0, this.hasRight() ? this.right.subtreeMaxMisbalance() : 0));
+            int current = this.subtreeMisbalance();
+            int left = this.hasLeft() ? this.left.subtreeMaxMisbalance() : 0;
+            int right = this.hasRight() ? this.right.subtreeMaxMisbalance() : 0;
+            int child = Math.abs(left) > Math.abs(right) ? left : right;
+            return Math.abs(current) > Math.abs(child) ? current : child;
         }
 
         int childCount(){

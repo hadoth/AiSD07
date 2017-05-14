@@ -3,30 +3,28 @@ package bootstrap;
 import bst.BinarySearchTree;
 import bst.SimpleBST;
 
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by Karol Pokomeda on 2017-04-22.
  */
 public class ListSevenExOneTest {
     public static void main(String[] args){
         BinarySearchTree<Integer> testTree = new SimpleBST<>(Integer::compareTo);
+        int numberOfTests = 100;
 
         testTree.add(10);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(20);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(5);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(6);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(7);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(25);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
         testTree.add(15);
-        System.out.println(testTree);
+        BinarySearchTree.treeDetails(testTree);
 
 
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
@@ -40,21 +38,31 @@ public class ListSevenExOneTest {
         testTree.delete(20);
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 
-        for (int i = 0; i < 100; i++){
+        for (int i = 0; i < numberOfTests; i++){
             if(testTree.size() == 0){
-                testTree.add((int)(Math.random()*100));
+                testTree.add((int)(Math.random()*numberOfTests));
             } else {
-                if (!testTree.add((int)(Math.random()*100))) System.out.println("Add failed, number already in set");
+                if (!testTree.add((int)(Math.random()*numberOfTests))) ;//System.out.println("Add failed, number already in set");
             }
             BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
             BinarySearchTree.assertSize(testTree);
-//            printTree(testTree);
+            BinarySearchTree.treeDetails(testTree);
+            BinarySearchTree.printTree(testTree);
         }
 
-        while (testTree.size() > 0){
+        while (testTree.size() > 1){
             BinarySearchTree.removeRandom(testTree);
             BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
-//            printTree(testTree);
+            BinarySearchTree.assertSize(testTree);
+            BinarySearchTree.treeDetails(testTree);
+            BinarySearchTree.printTree(testTree);
+        }
+
+        for (int i = 0; i < numberOfTests; i++){
+            BinarySearchTree.removeRandom(testTree);
+            testTree.add((int)(Math.random()*numberOfTests));
+            BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
+            BinarySearchTree.assertSize(testTree);
         }
     }
 }

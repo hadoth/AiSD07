@@ -15,6 +15,7 @@ public interface BinarySearchTree<T> {
     T nextValue(T t) throws IndexOutOfBoundsException;
     boolean add(T t);
     boolean delete(T t);
+    boolean contains(T t);
     List<T> getAllInOrder();
     List<T> getAllPreOrder();
     List<T> getAllPostOrder();

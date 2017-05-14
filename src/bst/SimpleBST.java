@@ -104,6 +104,20 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
     }
 
     @Override
+    public boolean contains(T t) {
+        if (this.root == null) return false;
+        return this.subtreeContains(t, this.root);
+    }
+
+    private boolean subtreeContains(T t, Element element){
+        int compareResult = this.comparator.compare(t, element.getContent());
+        if (compareResult == 0) return true;
+        if (compareResult > 0 && element.hasRight()) return this.subtreeContains(t, element.getRight());
+        if (compareResult < 0 && element.hasLeft()) return this.subtreeContains(t, element.getLeft());
+        return false;
+    }
+
+    @Override
     public List<T> getAllInOrder() {
         ArrayList<T> result = new ArrayList<>();
         if (this.root != null) this.root.insertInOrder(result);

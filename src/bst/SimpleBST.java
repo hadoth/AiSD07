@@ -329,7 +329,7 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
 
         // Create string representing tree structure
         int rowSize = (maxLength + 6) * listOfLists[listOfLists.length - 1].size();
-        for (int i = 0; i < rowSize/4; i++) result.append("-=*=- ");
+        for (int i = 0; i < rowSize/6 +1; i++) result.append("-=**=-");
         result.append('\n');
         for (int i =0; i < numberOfLayers; i++){
             for (int j = 0; j < listOfLists[i].size(); j++){
@@ -338,7 +338,7 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
             }
             result.append('\n');
         }
-        for (int i = 0; i < rowSize/4; i++) result.append("-=*=- ");
+        for (int i = 0; i < rowSize/6 +1; i++) result.append("-=**=-");
         result.append('\n');
 
         return result.toString();

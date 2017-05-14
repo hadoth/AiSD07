@@ -24,7 +24,6 @@ public interface BinarySearchTree<T> {
     int misbalance();
     int maxMisbalance();
     int leavesCount();
-    BinarySearchTree<T> subtree(T t);
 
     static<T> void printTree(BinarySearchTree<T> tree){
         System.out.println(Arrays.toString(tree.getAllInOrder().toArray()));

@@ -15,13 +15,6 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
         this.comparator = comparator;
     }
 
-    private SimpleBST(Comparator<T> comparator, Element element){
-        this.comparator = comparator;
-        this.root = new Element(element.getContent());
-        this.root.setLeft(element.getLeft());
-        this.root.setRight(element.getRight());
-    }
-
     @Override
     public T minValue() {
         return this.root.getMinRecurrence();
@@ -161,11 +154,6 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
     @Override
     public int leavesCount() {
         return this.root != null ? this.root.subtreeLeaves() : 0;
-    }
-
-    @Override
-    public BinarySearchTree<T> subtree(T t) {
-        return new SimpleBST<>(this.comparator, this.getElementFormSubtree(t, this.root));
     }
 
     private boolean addElement(T t, Element element){

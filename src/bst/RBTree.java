@@ -1,12 +1,17 @@
 package bst;
 
+import javax.lang.model.element.Element;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by Karol Pokomeda on 2017-05-14.
  */
 public class RBTree<T> implements BinarySearchTree<T> {
+    private Comparator<T> comparator;
+    private Element root;
 
+    public ()
 
     @Override
     public T minValue() {

@@ -26,6 +26,12 @@ public class ListSevenExOneTest {
         testTree.add(15);
         BinarySearchTree.treeDetails(testTree);
 
+        System.out.println();
+        for (int i = 0; i < numberOfTests; i++){
+            System.out.println("Tree contains number " + i + ": " + testTree.contains(i));
+        }
+        System.out.println();
+
 
         BinarySearchTree.testIfSorted(testTree, Integer::compareTo);
 

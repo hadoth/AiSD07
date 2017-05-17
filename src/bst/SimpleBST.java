@@ -306,7 +306,6 @@ public class SimpleBST<T> implements BinarySearchTree<T> {
     }
 
     public String toString(){
-
         // set string builder
         StringBuilder result = new StringBuilder();
 

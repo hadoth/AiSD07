@@ -291,6 +291,14 @@ public class RBTree<T> implements BinarySearchTree<T> {
             return (this.hasLeft() ? 1 : 0) + (this.hasRight() ? 1 : 0);
         }
 
+        public Element getUncle(){
+            return this.parent != null ? (this.parent.parent != null ? (this.parent.equals(this.parent.parent.getLeft()) ? this.parent.parent.getRight() : this.parent.parent.getLeft()) : null) : null;
+        }
+
+        public Element getGrandparent(){
+            return this.parent != null ? this.parent.parent : null ;
+        }
+
         List<T> getLayer(List<T> list, int layerIndex){
             if (layerIndex == 0) {
                 list.add(this.getContent());
@@ -307,6 +315,13 @@ public class RBTree<T> implements BinarySearchTree<T> {
                 for (int i = 0; i < Math.pow(2, layerIndex -1); i++) list.add(null);
             }
             return list;
+        }
+    }
+
+    class NIL extends Element {
+
+        NIL(T t) {
+            super(t);
         }
     }
 }

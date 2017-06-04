@@ -52,7 +52,7 @@ public class RBTree<T> implements BinarySearchTree<T> {
     }
 
     @Override
-    public boolean delete(T t) {
+    public boolean delete(T t) { //TODO: IMPLEMENT RBTree delete functionality
         try {
             Element toDelete = this.getElementFormSubtree(t, this.root);
             int childCount = toDelete.childCount();
